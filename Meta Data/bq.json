@@ -1,0 +1,31 @@
+{
+    "BigQuery Schema": [{
+      "name": "timestamp",
+      "type": "TIMESTAMP"
+     },
+     {
+      "name": "Open",
+      "type": "FLOAT"
+     },
+     {
+      "name": "High",
+      "type": "FLOAT"
+     },
+     {
+      "name": "Low",
+      "type": "FLOAT"
+     },
+     {
+      "name": "Close",
+      "type": "FLOAT"
+     },
+     {
+      "name": "Volume",
+      "type": "FLOAT"
+     },
+     {
+      "name": "Open_Interes",
+      "type": "FLOAT"
+     }
+    ]
+   }
