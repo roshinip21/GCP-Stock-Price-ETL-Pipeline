@@ -20,11 +20,8 @@ This project implements a batch ETL (Extract, Transform, Load) pipeline using Go
 
 ## 📁 Project Structure
 
-
-ETL-pipeline-Batch-processing-with-Airflow
-
 ```
-ETL-pipeline-Batch-processing-with-Airflow/
+GCP-Stock-Price-ETL-Pipeline/
 ├── dag.py
 ├── fetch_data.py
 ├── metaData/
