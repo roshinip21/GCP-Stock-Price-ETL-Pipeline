@@ -1,96 +1,141 @@
-# GCP Stock Market ETL Pipeline 🚀
+# 📊 Stock Market ETL Pipeline on GCP
 
-This project implements a fully automated, production-grade ETL pipeline on Google Cloud Platform to ingest, transform, and store daily stock market data from a public API. The pipeline is built using Cloud Composer (Airflow), Cloud Functions, Cloud Storage, Dataflow (Apache Beam), and BigQuery.
-
----
-
-## 📌 Project Overview
-
-The goal is to automate the daily ingestion and processing of stock market data to create a reliable analytics backend. The raw data is extracted from a stock API, cleaned and enriched, and stored in BigQuery for downstream use.
+This project implements a batch ETL (Extract, Transform, Load) pipeline using Google Cloud services including Cloud Composer (Apache Airflow), Cloud Storage, Cloud Functions, Dataflow, and BigQuery. The pipeline automates the ingestion of daily stock trading data, applies transformations, and loads it into BigQuery for analytics.
 
 ---
 
-## 🛠️ Tech Stack
+## 🧩 Architecture Overview
 
-- **Cloud Composer (Airflow)** – Orchestrates the daily ETL job  
-- **Cloud Functions** – Event-driven trigger for Dataflow  
-- **Cloud Storage** – Raw data landing zone  
-- **Cloud Dataflow** – Cleansing, enrichment, and transformation  
-- **BigQuery** – Final destination for structured, queryable data  
-- **Python & Apache Beam** – For transformation logic  
-- *(Optional)* Looker Studio – For visualization  
+<!-- Add architecture diagram image here -->
+![Architecture Diagram](images/gcp-etl-architecture.png)
 
----
-
-## 🧭 Architecture
-
-<!-- Add your diagram image here -->
-![Architecture Diagram](images/architecture-diagram.png)
-
-**Flow Summary**:
-1. **Cloud Composer** triggers a DAG daily to extract stock data via REST API and store it in **Cloud Storage**.
-2. A **Cloud Function** listens for new files in the bucket and launches a **Dataflow** job.
-3. The **Dataflow** pipeline reads, cleans, transforms, and loads the data into **BigQuery**.
-4. *(Optional)* Visualizations can be built on top of BigQuery in **Looker Studio**.
+**Workflow Summary:**
+1. **Cloud Composer (Airflow)** triggers a DAG daily to fetch stock trading data via a public API.
+2. The data is saved as a CSV in **Google Cloud Storage**.
+3. A **Cloud Function** listens for new files and triggers a **Dataflow** job.
+4. The **Dataflow** pipeline cleans, transforms, and enriches the data using UDFs and schema metadata.
+5. Processed data is written into a **BigQuery** table for downstream analysis.
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 
----
+ETL-pipeline-Batch-processing-with-Airflow
 
-
----
-
-## ⚙️ Setup Instructions
-
-1. **Enable GCP APIs**  
-   - Cloud Composer, Functions, Dataflow, BigQuery, Storage
-
-2. **Create Buckets & Datasets**  
-   - Create a GCS bucket for raw data  
-   - Create a BigQuery dataset (e.g., `stock_data`)
-
-3. **Deploy Cloud Function**  
-
-
- ---
-
-## 📈 Sample Outputs
-
-<!-- Add screenshots or queries -->
-![Sample BigQuery Table](images/sample-bq-table.png)
-
-<!-- Optional dashboard -->
-![Looker Dashboard](images/looker-dashboard.png)
+```
+ETL-pipeline-Batch-processing-with-Airflow/
+├── dag.py
+├── fetch_data.py
+├── metaData/
+│   ├── bq.json
+│   └── udf.js
+├── cloud run function/
+│   ├── main.py
+│   └── requirments.txt
+├── tradingData.csv
+└── README.md
+```
 
 ---
 
-## 📊 Sample KPIs & Metrics
+## ⚙️ Technologies Used
 
-- Daily Open/Close/Volume  
-- Percentage Change and Moving Averages  
-- Sector-wise Aggregates (if extended)  
-
----
-
-## 📌 Future Improvements
-
-- Add streaming support via Pub/Sub  
-- Enrich data with news sentiment or technical indicators  
-- Automate schema evolution in BigQuery  
-- Add data validation and alerting (e.g., via Slack or Cloud Monitoring)
+- **Apache Airflow / Cloud Composer** – DAG scheduling and orchestration
+- **Cloud Storage (GCS)** – File-based data ingestion and storage
+- **Cloud Functions** – Serverless trigger to launch Dataflow
+- **Cloud Dataflow (Apache Beam)** – Data transformation and processing
+- **BigQuery** – Scalable data warehousing and analytics
 
 ---
 
-## 🤝 Credits
+## 🚀 How the Pipeline Works
 
-This project is inspired by [Data With Kunal's video](https://www.youtube.com/watch?v=gMbtyfgFW08) and extended with production-ready design practices.
+<!-- Add a workflow or flowchart image here -->
+![ETL Flow](images/gcp-etl-workflow.png)
+
+1. **Scheduled Extraction**  
+   A Cloud Composer DAG triggers a Python script (`fetch_data.py`) to fetch daily stock data from a public API and upload it to a GCS bucket.
+
+2. **Event-driven Trigger**  
+   A Cloud Function listens for new file uploads in GCS. When triggered, it reads metadata and launches a Dataflow job.
+
+3. **Dataflow Processing**  
+   The Dataflow job uses the `udf.js` and `bq.json` to transform raw CSV data, clean null values, and enrich with calculated fields (e.g., % change, moving averages).
+
+4. **BigQuery Loading**  
+   The final output is written to a BigQuery table in an analytics-ready format, supporting queries and dashboards.
+
+
+
+## 🛠️ Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/ETL-pipeline-Batch-processing-with-Airflow.git
+cd ETL-pipeline-Batch-processing-with-Airflow
+````
+
+### 2. Configure GCP Environment
+
+* Create a **GCS bucket** for staging data
+* Create a **BigQuery dataset** and configure schema using `metaData/bq.json`
+* Enable required APIs: Composer, Cloud Functions, Dataflow, BigQuery, Cloud Storage
+
+### 3. Deploy Cloud Function
+
+```bash
+gcloud functions deploy trigger_dataflow \
+  --runtime python311 \
+  --trigger-resource <your-bucket-name> \
+  --trigger-event google.storage.object.finalize \
+  --entry-point main \
+  --source ./cloud\ run\ function \
+  --region <your-region>
+```
+
+### 4. Set Up Composer DAG
+
+* Upload `dag.py` to your Cloud Composer DAGs folder
+* Configure Airflow variables and GCP connections as needed
+
+### 5. Run the Pipeline
+
+* Upload a new `tradingData.csv` to GCS to simulate a new data pull
+* Watch the Cloud Function and Dataflow job logs
+* Verify the processed data in your BigQuery table
+
+---
+
+## 📈 Sample Output and Visualization
+
+<!-- Add image of sample data or query results -->
+
+![BigQuery Table Sample](images/sample-bq-output.png)
+
+Created dashboards using Looker Studio, Data Studio BI Tool connected to BigQuery.
+
+---
+
+## ✅ Best Practices Followed
+
+* Event-driven architecture using GCS and Cloud Functions
+* Modular pipeline with clear separation of extraction, transformation, and loading
+* Reusable metadata and schema definitions
+* Serverless and autoscaling components
+
+---
+
+## 🔒 IAM & Permissions Checklist
+
+* Cloud Function SA → Needs `Dataflow Developer` and `Storage Object Viewer`
+* Composer SA → Needs permission to trigger GCS uploads and run DAG tasks
+* BigQuery → Grant write access to Dataflow job and read access to analytics tools
+
 
 ---
 
 ## 📬 Contact
 
-For suggestions or collaborations, feel free to reach out via [LinkedIn](https://www.linkedin.com/).
-
+For questions, contributions, or feedback, please open an issue or reach out via [LinkedIn]((https://www.linkedin.com/in/roshini-p21/)).
