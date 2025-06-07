@@ -7,7 +7,6 @@ This project implements a batch ETL (Extract, Transform, Load) pipeline using Go
 ## 🧩 Architecture Overview
 
 <!-- Add architecture diagram image here -->
-![Architecture Diagram](images/gcp-etl-architecture.png)
 
 **Workflow Summary:**
 1. **Cloud Composer (Airflow)** triggers a DAG daily to fetch stock trading data via a public API.
@@ -49,7 +48,7 @@ GCP-Stock-Price-ETL-Pipeline/
 ## 🚀 How the Pipeline Works
 
 <!-- Add a workflow or flowchart image here -->
-![ETL Flow](images/gcp-etl-workflow.png)
+
 
 1. **Scheduled Extraction**  
    A Cloud Composer DAG triggers a Python script (`fetch_data.py`) to fetch daily stock data from a public API and upload it to a GCS bucket.
@@ -109,7 +108,6 @@ gcloud functions deploy trigger_dataflow \
 
 <!-- Add image of sample data or query results -->
 
-![BigQuery Table Sample](images/sample-bq-output.png)
 
 Created dashboards using Looker Studio, Data Studio BI Tool connected to BigQuery.
 
