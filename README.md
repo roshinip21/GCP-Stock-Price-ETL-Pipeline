@@ -6,7 +6,11 @@ This project implements a batch ETL (Extract, Transform, Load) pipeline using Go
 
 ## 🧩 Architecture Overview
 
-<!-- Add architecture diagram image here -->
+
+<p align="center">
+  <img src="https://github.com/roshinip21/GCP-Stock-Price-ETL-Pipeline/blob/main/GCP%20Images/DE%20System%20Design.png" width="60%" />
+</p>
+
 
 **Workflow Summary:**
 1. **Cloud Composer (Airflow)** triggers a DAG daily to fetch stock trading data via a public API.
@@ -47,7 +51,14 @@ GCP-Stock-Price-ETL-Pipeline/
 
 ## 🚀 How the Pipeline Works
 
-<!-- Add a workflow or flowchart image here -->
+<p align="center">
+  <img src="https://github.com/roshinip21/GCP-Stock-Price-ETL-Pipeline/blob/main/GCP%20Images/System%20Design%20and%20Data%20Flow.png" width="80%" />
+</p>
+
+<p align="center">
+ <img src="https://github.com/roshinip21/GCP-Stock-Price-ETL-Pipeline/blob/main/GCP%20Images/GCS%20Buckets.png" width="80%" />
+</p>
+
 
 
 1. **Scheduled Extraction**  
@@ -93,6 +104,11 @@ gcloud functions deploy trigger_dataflow \
 
 ### 4. Set Up Composer DAG
 
+<p align="center">
+  <img src="https://github.com/roshinip21/GCP-Stock-Price-ETL-Pipeline/blob/main/GCP%20Images/Airflow%20Dags.png" width="80%" />
+</p>
+
+
 * Upload `dag.py` to your Cloud Composer DAGs folder
 * Configure Airflow variables and GCP connections as needed
 
@@ -104,12 +120,14 @@ gcloud functions deploy trigger_dataflow \
 
 ---
 
-## 📈 Sample Output and Visualization
-
-<!-- Add image of sample data or query results -->
+## 📈 BigQuery Output 
 
 
-Created dashboards using Looker Studio, Data Studio BI Tool connected to BigQuery.
+<p align="center">
+  <img src="https://github.com/roshinip21/GCP-Stock-Price-ETL-Pipeline/blob/main/GCP%20Images/BigQuery%20Data.png" width="80%" />
+</p>
+
+We can create dashboards using Looker Studio, Data Studio BI Tool connected to BigQuery.
 
 ---
 
